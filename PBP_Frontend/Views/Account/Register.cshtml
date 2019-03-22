@@ -2,15 +2,14 @@
 @{
     ViewBag.Title = "Registrar";
 }
-
-@Styles.Render("~/Content/pbp-stylesheet.css")
+@Styles.Render("~/Content/layoutExternal.css")
 
 <h2 class="center-text center-text-title">REGISTRAR</h2>
 <h4 class="center-text">Crie uma nova conta.</h4>
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal center-form-alt", role = "form", @style="margin-left: 25%;" }))
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal center-form-alt", role = "form", @style = "margin-left: 25%;" }))
 {
-    @Html.AntiForgeryToken()    
-    
+    @Html.AntiForgeryToken()
+
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })

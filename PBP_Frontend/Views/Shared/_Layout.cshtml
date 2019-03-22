@@ -11,22 +11,12 @@
     <title>@ViewBag.Title - @appNome</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @Styles.Render("~/Content/pbp-layout.css")
 
 </head>
 <body>
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<!--<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>-->
-				@Html.ActionLink(appNome, "Index", "Home", new { area = "" }, new { @class = "navbar-brand", @id = "pbp-brand" })
-			</div>
-		</div>
-	</div>
+    <div class="container">
+        <img src="~/Images/logo.bmp" alt="Logo" />
+    </div>
 	<div class="container body-content">
 		@RenderBody()
 	</div>
@@ -34,10 +24,5 @@
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")
 	@RenderSection("scripts", required: false)
-
-	
 </body>
-<footer class="foot">
-	<p>&copy; @DateTime.Now.Year - @appNome</p>
-</footer>
 </html>

@@ -1,5 +1,6 @@
-﻿body{
+﻿body {
     align-items: center;
+    padding-top: 0px;
 }
 
 .btn-confirm {
@@ -50,4 +51,33 @@
 .center-text-title {
     color: rgb(237, 125, 49);
     font-weight: bold;
+}
+
+.navbar {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    border-style: none;
+    padding-top: 0px;
+}
+
+#pbp-brand {
+    font-size: 28px;
+    font-weight: bold;
+    color: rgb(237, 125, 49);
+}
+
+#pbp-brand:hover {
+    color: rgb(167, 75, 12);
+}
+
+.navbar-collapse {
+    color: rgb(0, 0,0);
+}
+
+#loginLink, #registerLink {
+    color: rbg(0, 0, 0);
+}
+
+#loginLink:hover, #registerLink:hover {
+    color: rgb(237, 125, 49);
 }
