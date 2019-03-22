@@ -1,0 +1,42 @@
+﻿body{
+    padding-top: 0px;
+}
+
+.navbar {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    border-style: none;
+    padding-top: 0px;
+}
+
+#pbp-brand {
+    font-size: 28px;
+    font-weight: bold;
+    color: rgb(237, 125, 49);
+}
+
+#pbp-brand:hover {
+    color: rgb(167, 75, 12);
+}
+
+.navbar-collapse{
+    color: rgb(0, 0 ,0);
+}
+
+.foot {
+    position: absolute;
+    left: 0;
+    bottom: 0%;
+    width: 100%;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    background-color: rgb(46, 62, 77);
+}
+
+#loginLink, #registerLink{
+    color: rbg(0, 0, 0);
+}
+
+#loginLink:hover, #registerLink:hover {
+    color: rgb(237, 125, 49);
+}
