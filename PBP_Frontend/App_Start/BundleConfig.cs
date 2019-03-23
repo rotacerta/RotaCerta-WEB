@@ -24,8 +24,15 @@ namespace PBP_Frontend
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
+                      "~/Content/bootstrap.css"));
+
+            bundles.Add(new StyleBundle("~/InternalContent/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/layoutInternal.css"));
+
+            bundles.Add(new StyleBundle("~/ExternalContent/css").Include(
+                      "~/Content/bootstrap.css",
+                      "~/Content/layoutExternal.css"));
         }
     }
 }

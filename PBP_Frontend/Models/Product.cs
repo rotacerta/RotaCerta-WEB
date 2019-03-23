@@ -8,25 +8,9 @@ namespace pfcWeb.Models
 {
     public class Product
     {
-        [Key] public int Id { get; set; }
-        public string Name;
+        [Key]
+        public int ProductId { get; set; }
+        public string Name { get; set; }
         public int LocationId { get; set; }
-
-        public bool setName(string name)
-        {
-            if(name != null) {
-                int sizeName = name.Length;
-                if (sizeName > 0 && sizeName <= 50)
-                {
-                    this.Name = name;
-                    return true;
-                }
-            }
-            return false;
-        }
-        public string getName()
-        {
-             return this.Name;
-        }
     }
 }

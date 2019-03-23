@@ -1,8 +1,9 @@
 ﻿@model PBP_Frontend.Models.RegisterViewModel
 @{
-    ViewBag.Title = "Registrar";
-}
-@Styles.Render("~/Content/layoutExternal.css")
+        ViewBag.Title = "Registrar";
+        Layout = "~/Views/Shared/_ExternalLayout.cshtml";
+    }
+    @Scripts.Render("~/ExternalContent/css")
 
 <h2 class="center-text center-text-title">REGISTRAR</h2>
 <h4 class="center-text">Crie uma nova conta.</h4>

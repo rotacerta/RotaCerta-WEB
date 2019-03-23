@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Meu Aplicativo ASP.NET</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    @Styles.Render("~/InternalContent/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body class="clearfix">
+    <div class="nav-side-menu">
+        <div class="brand"><img src="~/Images/logo.bmp" alt="Logo" class="img-logo" /></div>
+        <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+
+        <div class="menu-list">
+
+            <ul id="menu-content" class="menu-content collapse out">
+                <li data-toggle="collapse" data-target="#menu-list" class="collapsed active">
+                    <a href="#"><i class="fas fa-th-list"></i> Lista <i class="fas fa-caret-down arrow"></i></a>
+                </li>
+                <ul class="sub-menu collapse" id="menu-list">
+                    <li><a href="@Url.Action("{action}","{Controller}")"><i class="fas fa-plus"></i> Cadastrar</a></li>
+                    <li><a href="@Url.Action("{action}","{Controller}")"><i class="fas fa-search"></i> Consultar</a></li>
+                </ul>
+                <li>
+                    <a href="@Url.Action("Index","Clientes")">
+                        <i class="fas fa-box-open"></i> Consultar Produtos
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("{action}","{Controller}")">
+                        <i class="fas fa-cog"></i> Configurações
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("{action}","{Controller}")">
+                        <i class="fas fa-book"></i> Manual de uso
+                    </a>
+                </li>
+                <li class="sidebar-bottom">
+                    <a href="@Url.Action("{action}","{Controller}")">
+                        <i class="fas fa-power-off"></i> Sair
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
