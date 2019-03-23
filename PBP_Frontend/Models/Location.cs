@@ -10,5 +10,6 @@ namespace pfcWeb.Models
         public int Street { get; set; }
         public int Building { get; set; }
         public int Flat { get; set; }
+        public virtual Product Product { get; set; }
     }
 }
