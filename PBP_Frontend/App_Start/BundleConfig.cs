@@ -27,11 +27,9 @@ namespace PBP_Frontend
                       "~/Content/bootstrap.css"));
 
             bundles.Add(new StyleBundle("~/InternalContent/css").Include(
-                      "~/Content/bootstrap.css",
                       "~/Content/layoutInternal.css"));
 
             bundles.Add(new StyleBundle("~/ExternalContent/css").Include(
-                      "~/Content/bootstrap.css",
                       "~/Content/layoutExternal.css"));
         }
     }

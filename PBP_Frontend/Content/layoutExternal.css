@@ -17,33 +17,6 @@
     background-color: rgb(0, 95, 43);
 }
 
-.center-form input {
-    position: relative;
-    margin-left: 25%;
-}
-
-.center-form .control-label{
-    margin-left: 15%;
-}
-
-.center-form input, .center-form .col-md-2, .center-form .side-link {
-    margin-left: 15%;
-}
-
-.text-danger, #Email-error, #Password-error {
-    margin-left: 8%;
-    max-width: 500px;
-}
-
-.center-form-alt input {
-    margin-left: 20%;
-}
-
-.center-form-alt .control-label, .side-link {
-    margin-left: 20%;
-    max-width: 200px;
-}
-
 .center-text {
     text-align: center;
 }
@@ -71,11 +44,11 @@
 }
 
 .navbar-collapse {
-    color: rgb(0, 0,0);
+    color: rgb(0, 0, 0);
 }
 
 #loginLink, #registerLink {
-    color: rbg(0, 0, 0);
+    color: rgb(0, 0, 0);
 }
 
 #loginLink:hover, #registerLink:hover {
