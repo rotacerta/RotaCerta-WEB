@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace pfcWeb.Models
+namespace PBP_Frontend.Models
 {
     public class Location
     {
@@ -10,6 +11,7 @@ namespace pfcWeb.Models
         public int Street { get; set; }
         public int Building { get; set; }
         public int Flat { get; set; }
-        public virtual Product Product { get; set; }
+
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

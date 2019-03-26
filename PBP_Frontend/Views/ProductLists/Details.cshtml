@@ -1,0 +1,51 @@
+﻿@model PBP_Frontend.Models.ProductList
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_InternalLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ProductList</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.List.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.List.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Product.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Product.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.QuantityCatched)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QuantityCatched)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequiredQuantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequiredQuantity)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProductListId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
