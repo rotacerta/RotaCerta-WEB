@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PBP_Frontend.Models;
+using PBP_Frontend.ViewModels;
 
 namespace PBP_Frontend.Controllers
 {
@@ -18,6 +19,64 @@ namespace PBP_Frontend.Controllers
         public ActionResult Index()
         {
             return View(db.Lists.ToList());
+        }
+
+        // GET: Lists/ChooseProducts
+        public ActionResult ChooseProducts()
+        {
+            ChooseProductsViewModel cp = new ChooseProductsViewModel
+            {
+                ProductsToChoose = new List<ProductToChoose>
+            {
+                new ProductToChoose
+                {
+                    ProductId = 1,
+                    ProductName = "Produto 1",
+                    ProductLocation = "X.X.X.X",
+                    Chosen = false
+                },
+                new ProductToChoose
+                {
+                    ProductId = 2,
+                    ProductName = "Produto 2",
+                    ProductLocation = "X.X.X.X",
+                    Chosen = false
+                },
+                new ProductToChoose
+                {
+                    ProductId = 3,
+                    ProductName = "Produto 3",
+                    ProductLocation = "X.X.X.X",
+                    Chosen = false
+                }
+            }
+            };
+            return View(cp);
+        }
+
+        // POST: Lists/ChooseProducts
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChooseProducts(ChooseProductsViewModel cp)
+        {
+            if(cp.ProductsToChoose?.Where(item => item.Chosen == true)?.Count() > 0)
+            {
+                ListViewModel lvm = new ListViewModel { ProductsChosen = new List<ProductChosen>() };
+                foreach(var cpr in cp?.ProductsToChoose)
+                {
+                    lvm.ProductsChosen.Add(new ProductChosen
+                    {
+                        ProductId = cpr.ProductId,
+                        ProductName = cpr.ProductName
+                    });
+                }
+                return RedirectToAction("CreateList", lvm);
+            }
+            else
+            {
+                ModelState.AddModelError("", "Selecione, ao menos, um produto.");
+            }
+            return View(cp);
         }
 
         // GET: Lists/Details/5
@@ -35,18 +94,16 @@ namespace PBP_Frontend.Controllers
             return View(list);
         }
 
-        // GET: Lists/Create
-        public ActionResult Create()
+        // GET: Lists/CreateList
+        public ActionResult CreateList(ListViewModel productsViewmodel)
         {
-            return View();
+            return View(productsViewmodel);
         }
 
-        // POST: Lists/Create
-        // Para se proteger de mais ataques, ative as propriedades específicas a que você quer se conectar. Para 
-        // obter mais detalhes, consulte https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Lists/CreateList
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ListId,Name,Requester")] List list)
+        public ActionResult CreateList(List list)
         {
             if (ModelState.IsValid)
             {
@@ -74,8 +131,6 @@ namespace PBP_Frontend.Controllers
         }
 
         // POST: Lists/Edit/5
-        // Para se proteger de mais ataques, ative as propriedades específicas a que você quer se conectar. Para 
-        // obter mais detalhes, consulte https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ListId,Name,Requester")] List list)
