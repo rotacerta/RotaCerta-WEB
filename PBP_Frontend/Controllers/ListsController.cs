@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -59,10 +60,11 @@ namespace PBP_Frontend.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChooseProducts(ChooseProductsViewModel cp)
         {
-            if(cp.ProductsToChoose?.Where(item => item.Chosen == true)?.Count() > 0)
+            List<ProductToChoose> chosenProducts = cp.ProductsToChoose?.Where(item => item.Chosen == true).ToList();
+            if (chosenProducts?.Count() > 0)
             {
                 ListViewModel lvm = new ListViewModel { ProductsChosen = new List<ProductChosen>() };
-                foreach(var cpr in cp?.ProductsToChoose)
+                foreach(var cpr in chosenProducts)
                 {
                     lvm.ProductsChosen.Add(new ProductChosen
                     {
@@ -70,7 +72,8 @@ namespace PBP_Frontend.Controllers
                         ProductName = cpr.ProductName
                     });
                 }
-                return RedirectToAction("CreateList", lvm);
+                TempData["chosenProducts"] = lvm;
+                return RedirectToAction("CreateList");
             }
             else
             {
@@ -95,24 +98,39 @@ namespace PBP_Frontend.Controllers
         }
 
         // GET: Lists/CreateList
-        public ActionResult CreateList(ListViewModel productsViewmodel)
+        public ActionResult CreateList()
         {
-            return View(productsViewmodel);
+            //productsViewmodel = TempData["chosenProducts"] as ListViewModel;
+            return View(TempData["chosenProducts"] as ListViewModel);
         }
 
         // POST: Lists/CreateList
-        [HttpPost]
+        [HttpPost, ActionName("CreateList")]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateList(List list)
+        public ActionResult SaveList(ListViewModel productsViewmodel)
         {
             if (ModelState.IsValid)
             {
-                db.Lists.Add(list);
-                db.SaveChanges();
+                productsViewmodel.ListName = productsViewmodel.ListName.Trim();
+                if(productsViewmodel.ListName.Length > 0)
+                {
+                    productsViewmodel.ListRequester = productsViewmodel.ListRequester.Trim();
+                    if (productsViewmodel.ListRequester.Length > 0)
+                    {
+                        //TODO: verificar se tem algum item que tenha quantidade igual a 0
+                    }
+                    else
+                    {
+                        //ModelState.AddModelError("");
+                    }
+                }
+                else
+                {
+                    //ModelState.AddModelError("");
+                }
                 return RedirectToAction("Index");
             }
-
-            return View(list);
+            return View();
         }
 
         // GET: Lists/Edit/5
