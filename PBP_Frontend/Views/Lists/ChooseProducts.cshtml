@@ -58,10 +58,13 @@
         }
 
     </table>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Continuar" class="btn btn-success" />
+    if(Model?.ProductsToChoose?.Count > 0)
+    {
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Continuar" class="btn btn-success" />
+            </div>
         </div>
-    </div>
+    }
 }
 

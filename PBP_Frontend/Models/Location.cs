@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace PBP_Frontend.Models
@@ -13,5 +14,10 @@ namespace PBP_Frontend.Models
         public int Flat { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
+
+        public string ToString()
+        {
+            return String.Format("{0}.{1}.{2}.{3}", this.Structure, this.Street, this.Building, this.Flat);
+        }
     }
 }

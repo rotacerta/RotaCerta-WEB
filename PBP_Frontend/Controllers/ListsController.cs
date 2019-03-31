@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PBP_Frontend.Models;
+using PBP_Frontend.Service;
 using PBP_Frontend.ViewModels;
 
 namespace PBP_Frontend.Controllers
@@ -15,6 +16,12 @@ namespace PBP_Frontend.Controllers
     public class ListsController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
+        private ListService listService;
+
+        public ListsController()
+        {
+            listService = new ListService(db);
+        }
 
         // GET: Lists
         public ActionResult Index()
@@ -22,35 +29,28 @@ namespace PBP_Frontend.Controllers
             return View(db.Lists.ToList());
         }
 
+        // GET: Lists/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            List list = db.Lists.Find(id);
+            if (list == null)
+            {
+                return HttpNotFound();
+            }
+            return View(list);
+        }
+
         // GET: Lists/ChooseProducts
         public ActionResult ChooseProducts()
         {
+            ProductToChooseService productToChooseService = new ProductToChooseService(db);
             ChooseProductsViewModel cp = new ChooseProductsViewModel
             {
-                ProductsToChoose = new List<ProductToChoose>
-            {
-                new ProductToChoose
-                {
-                    ProductId = 1,
-                    ProductName = "Produto 1",
-                    ProductLocation = "X.X.X.X",
-                    Chosen = false
-                },
-                new ProductToChoose
-                {
-                    ProductId = 2,
-                    ProductName = "Produto 2",
-                    ProductLocation = "X.X.X.X",
-                    Chosen = false
-                },
-                new ProductToChoose
-                {
-                    ProductId = 3,
-                    ProductName = "Produto 3",
-                    ProductLocation = "X.X.X.X",
-                    Chosen = false
-                }
-            }
+                ProductsToChoose = productToChooseService.GetProductsToChoose()
             };
             return View(cp);
         }
@@ -82,55 +82,31 @@ namespace PBP_Frontend.Controllers
             return View(cp);
         }
 
-        // GET: Lists/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            List list = db.Lists.Find(id);
-            if (list == null)
-            {
-                return HttpNotFound();
-            }
-            return View(list);
-        }
-
         // GET: Lists/CreateList
         public ActionResult CreateList()
         {
-            //productsViewmodel = TempData["chosenProducts"] as ListViewModel;
+            if (TempData["chosenProducts"] == null)
+            {
+                return RedirectToAction("ChooseProducts");
+            }
             return View(TempData["chosenProducts"] as ListViewModel);
         }
 
         // POST: Lists/CreateList
-        [HttpPost, ActionName("CreateList")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveList(ListViewModel productsViewmodel)
+        public ActionResult CreateList(ListViewModel productsViewmodel)
         {
             if (ModelState.IsValid)
             {
-                productsViewmodel.ListName = productsViewmodel.ListName.Trim();
-                if(productsViewmodel.ListName.Length > 0)
+                List<string> errors = listService.PreInsertList(productsViewmodel);
+                if (errors.Count == 0)
                 {
-                    productsViewmodel.ListRequester = productsViewmodel.ListRequester.Trim();
-                    if (productsViewmodel.ListRequester.Length > 0)
-                    {
-                        //TODO: verificar se tem algum item que tenha quantidade igual a 0
-                    }
-                    else
-                    {
-                        //ModelState.AddModelError("");
-                    }
+                    return RedirectToAction("Index");
                 }
-                else
-                {
-                    //ModelState.AddModelError("");
-                }
-                return RedirectToAction("Index");
+                errors.ForEach(message => ModelState.AddModelError("", message));
             }
-            return View();
+            return View(productsViewmodel);
         }
 
         // GET: Lists/Edit/5
