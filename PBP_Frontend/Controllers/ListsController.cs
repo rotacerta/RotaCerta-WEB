@@ -77,7 +77,7 @@ namespace PBP_Frontend.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "Selecione, ao menos, um produto.");
+                ModelState.AddModelError("", "Selecione ao menos um produto.");
             }
             return View(cp);
         }

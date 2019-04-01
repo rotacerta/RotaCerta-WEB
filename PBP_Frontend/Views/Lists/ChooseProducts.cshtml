@@ -5,26 +5,27 @@
     Layout = "~/Views/Shared/_InternalLayout.cshtml";
 }
 
-<h2>Criar Lista</h2>
+<h2 class="internal-page-title">Criar Lista</h2>
+<h5 class="internal-page-subtitle">Crie sua lista de produtos</h5>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-    <table class="table">
-        <tr>
-            <th>
-                #
-            </th>
-            <th>
-                Produto
-            </th>
-            <th>
-                Localização
-            </th>
-            <th></th>
-        </tr>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Produto
+                </th>
+                <th>
+                    Localização
+                </th>
+                <th></th>
+            </tr>
+        </thead>
         @if (Model?.ProductsToChoose?.Count > 0)
         {
             for (int i = 0; i < Model.ProductsToChoose.Count; i++)
@@ -56,15 +57,13 @@
                 </td>
             </tr>
         }
-
     </table>
     if(Model?.ProductsToChoose?.Count > 0)
     {
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-2 col-md-10 div-btn-right-aligned">
                 <input type="submit" value="Continuar" class="btn btn-success" />
             </div>
         </div>
     }
 }
-

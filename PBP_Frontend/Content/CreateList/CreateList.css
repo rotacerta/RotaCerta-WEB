@@ -1,0 +1,9 @@
+﻿.table-input {
+    padding: 0;
+    width: 55%;
+    height: auto;
+    border-radius: 0;
+    border: 0px solid #ced4da;
+    background-color: transparent;
+    border-bottom: 1px solid #ced4da !important;
+}

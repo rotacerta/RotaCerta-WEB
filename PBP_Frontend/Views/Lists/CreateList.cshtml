@@ -5,26 +5,44 @@
     Layout = "~/Views/Shared/_InternalLayout.cshtml";
 }
 
-<h2>Criar Lista 2</h2>
+<h2 class="internal-page-title">Criar Lista</h2>
+<h5 class="internal-page-subtitle">Crie sua lista de produtos</h5>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.EditorFor(modelItem => Model.ListName, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.EditorFor(modelItem => Model.ListRequester, new { htmlAttributes = new { @class = "form-control" } })
-    <table class="table">
-        <tr>
-            <th>
-                #
-            </th>
-            <th>
-                Produto
-            </th>
-            <th>
-                Quantidade
-            </th>
-        </tr>
+    <div class="row d-flex justify-content-around">
+        <div class="form-group col-md-6">
+            <div>
+                <label class="control-label col-md-2" for="ListName">Nome</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(modelItem => Model.ListName, new { htmlAttributes = new { @class = "form-control", minlength = "1", maxlength = "70" } })
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <div>
+                <label class="control-label col-md-2" for="ListRequester">Solicitante</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(modelItem => Model.ListRequester, new { htmlAttributes = new { @class = "form-control", minlength = "1", maxlength = "70" } })
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Produto
+                </th>
+                <th>
+                    Quantidade
+                </th>
+            </tr>
+        </thead>
         @if (Model?.ProductsChosen?.Count > 0)
         {
             for (int i = 0; i < Model.ProductsChosen.Count; i++)
@@ -39,7 +57,7 @@
                         @Html.HiddenFor(modelItem => Model.ProductsChosen[i].ProductName)
                     </td>
                     <td>
-                        @Html.EditorFor(modelItem => Model.ProductsChosen[i].RequiredQuantity, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(modelItem => Model.ProductsChosen[i].RequiredQuantity, new { htmlAttributes = new { @class = "form-control table-input", min = 1, max = 99, step = "1" } })
                     </td>
                 </tr>
             }
@@ -55,9 +73,12 @@
 
     </table>
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Continuar" class="btn btn-success" />
+        <div class="col-md-offset-2 col-md-10 div-btn-right-aligned">
+            <input type="submit" value="Concluir" class="btn btn-success" />
         </div>
     </div>
 }
-
+@section styles
+{
+    <link href="~/Content/CreateList/CreateList.css" rel="stylesheet" />
+}
