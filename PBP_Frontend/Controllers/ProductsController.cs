@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using PBP_Frontend.Models;
 
@@ -17,8 +13,8 @@ namespace PBP_Frontend.Controllers
         // GET: Products
         public ActionResult Index()
         {
-            var products = db.Products.Include(p => p.Location);
-            return View(products.ToList());
+           var products = db.Products.Include(p => p.Location);
+           return View(products.ToList());
         }
 
         // GET: Products/Details/5

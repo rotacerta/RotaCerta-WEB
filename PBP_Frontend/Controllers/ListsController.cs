@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -7,12 +8,20 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using PBP_Frontend.Models;
+using PBP_Frontend.Service;
+using PBP_Frontend.ViewModels;
 
 namespace PBP_Frontend.Controllers
 {
     public class ListsController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
+        private ListService listService;
+
+        public ListsController()
+        {
+            listService = new ListService(db);
+        }
 
         // GET: Lists
         public ActionResult Index()
@@ -35,27 +44,69 @@ namespace PBP_Frontend.Controllers
             return View(list);
         }
 
-        // GET: Lists/Create
-        public ActionResult Create()
+        // GET: Lists/ChooseProducts
+        public ActionResult ChooseProducts()
         {
-            return View();
+            ProductToChooseService productToChooseService = new ProductToChooseService(db);
+            ChooseProductsViewModel cp = new ChooseProductsViewModel
+            {
+                ProductsToChoose = productToChooseService.GetProductsToChoose()
+            };
+            return View(cp);
         }
 
-        // POST: Lists/Create
-        // Para se proteger de mais ataques, ative as propriedades específicas a que você quer se conectar. Para 
-        // obter mais detalhes, consulte https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Lists/ChooseProducts
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ListId,Name,Requester")] List list)
+        public ActionResult ChooseProducts(ChooseProductsViewModel cp)
+        {
+            List<ProductToChoose> chosenProducts = cp.ProductsToChoose?.Where(item => item.Chosen == true).ToList();
+            if (chosenProducts?.Count() > 0)
+            {
+                ListViewModel lvm = new ListViewModel { ProductsChosen = new List<ProductChosen>() };
+                foreach(var cpr in chosenProducts)
+                {
+                    lvm.ProductsChosen.Add(new ProductChosen
+                    {
+                        ProductId = cpr.ProductId,
+                        ProductName = cpr.ProductName
+                    });
+                }
+                TempData["chosenProducts"] = lvm;
+                return RedirectToAction("CreateList");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Selecione ao menos um produto.");
+            }
+            return View(cp);
+        }
+
+        // GET: Lists/CreateList
+        public ActionResult CreateList()
+        {
+            if (TempData["chosenProducts"] == null)
+            {
+                return RedirectToAction("ChooseProducts");
+            }
+            return View(TempData["chosenProducts"] as ListViewModel);
+        }
+
+        // POST: Lists/CreateList
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateList(ListViewModel productsViewmodel)
         {
             if (ModelState.IsValid)
             {
-                db.Lists.Add(list);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                List<string> errors = listService.PreInsertList(productsViewmodel);
+                if (errors.Count == 0)
+                {
+                    return RedirectToAction("Index");
+                }
+                errors.ForEach(message => ModelState.AddModelError("", message));
             }
-
-            return View(list);
+            return View(productsViewmodel);
         }
 
         // GET: Lists/Edit/5
@@ -74,8 +125,6 @@ namespace PBP_Frontend.Controllers
         }
 
         // POST: Lists/Edit/5
-        // Para se proteger de mais ataques, ative as propriedades específicas a que você quer se conectar. Para 
-        // obter mais detalhes, consulte https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ListId,Name,Requester")] List list)

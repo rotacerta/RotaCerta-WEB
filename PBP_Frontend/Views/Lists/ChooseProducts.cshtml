@@ -1,0 +1,69 @@
+﻿@model PBP_Frontend.ViewModels.ChooseProductsViewModel
+
+@{
+    ViewBag.Title = "ChooseProducts";
+    Layout = "~/Views/Shared/_InternalLayout.cshtml";
+}
+
+<h2 class="internal-page-title">Criar Lista</h2>
+<h5 class="internal-page-subtitle">Crie sua lista de produtos</h5>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Produto
+                </th>
+                <th>
+                    Localização
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        @if (Model?.ProductsToChoose?.Count > 0)
+        {
+            for (int i = 0; i < Model.ProductsToChoose.Count; i++)
+            {
+                <tr>
+                    <td class="font-weight-bold">
+                        @Html.DisplayName(String.Format("{0}", i + 1))
+                        @Html.HiddenFor(modelItem => Model.ProductsToChoose[i].ProductId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.ProductsToChoose[i].ProductName)
+                        @Html.HiddenFor(modelItem => Model.ProductsToChoose[i].ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.ProductsToChoose[i].ProductLocation)
+                        @Html.HiddenFor(modelItem => Model.ProductsToChoose[i].ProductLocation)
+                    </td>
+                    <td>
+                        @Html.EditorFor(modelItem => Model.ProductsToChoose[i].Chosen)
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4" class="text-center">
+                    Nenhum item encontrado
+                </td>
+            </tr>
+        }
+    </table>
+    if(Model?.ProductsToChoose?.Count > 0)
+    {
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10 div-btn-right-aligned">
+                <input type="submit" value="Continuar" class="btn btn-success" />
+            </div>
+        </div>
+    }
+}
