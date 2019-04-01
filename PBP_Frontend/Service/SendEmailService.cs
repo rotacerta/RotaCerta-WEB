@@ -8,16 +8,16 @@ using System.IO;
 
 namespace PBP_Frontend.Service
 {
-    public class EmailService
+    public class SendEmailService
     {
         private string email = "replyeras@gmail.com";
         private string password = "grupoeras06";
         private string title = "Olá, aqui é a equipe de segurança ERAS";
         private string content 
             = "Foi solicitada a alteração da senha do seu" +
-            "e-mail no aplicativo RotaCerta, você confirma essa ação?";
+            "e-mail no aplicativo RotaCerta, sua nova senha é ";
 
-        public bool Send(string sendToName, string sendToEmail)
+        public bool Send(string sendToName, string sendToEmail, string newPassword)
         {
             MailMessage mailMessage = new MailMessage();
             SmtpClient smtpClient = new SmtpClient();
@@ -25,11 +25,11 @@ namespace PBP_Frontend.Service
             try
             {
 
-                mailMessage.From = new MailAddress(email, "Display name");
+                mailMessage.From = new MailAddress(email, "[RotaCerta] Alteração de senha");
                 mailMessage.To.Add(new MailAddress(sendToEmail, sendToName));
 
                 mailMessage.Subject = title;
-                mailMessage.Body = content;
+                mailMessage.Body = content + newPassword;
 
 
                 smtpClient.Host = "smtp.gmail.com";

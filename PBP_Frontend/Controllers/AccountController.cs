@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -9,6 +10,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using PBP_Frontend.Models;
+using PBP_Frontend.Service;
 
 namespace PBP_Frontend.Controllers
 {
@@ -210,11 +212,15 @@ namespace PBP_Frontend.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-                {
+                // if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                // {
                     // Não revelar que o usuário não existe ou não está confirmado
-                    return View("ForgotPasswordConfirmation");
-                }
+                //    return View("ForgotPasswordConfirmation");
+                // }
+                Random randNum = new Random();
+                string newPassword = randNum.Next(0, 1000).ToString();
+                
+                await ChangePassword(model, user, newPassword);
 
                 // Para obter mais informações sobre como habilitar a confirmação da conta e redefinição de senha, visite https://go.microsoft.com/fwlink/?LinkID=320771
                 // Enviar um email com este link
@@ -225,6 +231,24 @@ namespace PBP_Frontend.Controllers
             }
 
             // Se chegamos até aqui e houver alguma falha, exiba novamente o formulário
+            return View(model);
+        }
+
+        private async Task<ActionResult> ChangePassword(ForgotPasswordViewModel model, ApplicationUser user, string newPassword)
+        {
+            var result = await UserManager.ChangePasswordAsync(user.Id, user.PasswordHash, newPassword);
+            if (result.Succeeded)
+            {
+                if (user != null)
+                {
+                    SendEmailService emailService = new SendEmailService();
+                    emailService.Send(user.UserName, user.Email, newPassword);
+
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                }
+                return RedirectToAction("Login", new { Message = "Senha alterada com sucesso" });
+            }
+
             return View(model);
         }
 
