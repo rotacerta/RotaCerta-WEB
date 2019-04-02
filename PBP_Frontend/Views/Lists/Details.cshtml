@@ -1,4 +1,4 @@
-﻿@model PBP_Frontend.Models.List
+﻿@model PBP_Frontend.ViewModels.ListViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -11,10 +11,10 @@
 <div>
     <div>
         <div class="row">
-            <p><span class="font-weight-bold">Nome da Lista:</span> @Html.DisplayFor(model => model.Name)</p>
+            <p><span class="font-weight-bold">Nome da Lista:</span> @Html.DisplayFor(model => model.ListName)</p>
         </div>
         <div class="row">
-            <p><span class="font-weight-bold">Solicitante:</span> @Html.DisplayFor(model => model.Requester)</p>
+            <p><span class="font-weight-bold">Solicitante:</span> @Html.DisplayFor(model => model.ListRequester)</p>
         </div>
         <div class="row">
             <p><span class="font-weight-bold">Data de criação:</span> --/--/----</p>
@@ -24,7 +24,54 @@
         </div>
     </div>
 </div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                Produto
+            </th>
+            <th>
+                Quantidade Requerida
+            </th>
+            <th>
+                Quantidade Recolhida
+            </th>
+        </tr>
+    </thead>
+
+    @if (Model?.ProductsChosen?.Count() > 0)
+    {
+        for (int i = 0; i < Model?.ProductsChosen?.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayName(String.Format("{0}", i + 1))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.ProductsChosen[i].ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.ProductsChosen[i].RequiredQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.ProductsChosen[i].QuantityCatched)
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="4" class="text-center">
+                Nenhum item encontrado
+            </td>
+        </tr>
+    }
+</table>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ListId }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Voltar", "Index")
 </p>

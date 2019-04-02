@@ -24,5 +24,6 @@ namespace PBP_Frontend.ViewModels
         [Display(Name = "Quantidade")]
         [Range(1, 300, ErrorMessage = "Insira valores entre {1} e {2}.")]
         public int RequiredQuantity { get; set; }
+        public int QuantityCatched { get; set; }
     }
 }

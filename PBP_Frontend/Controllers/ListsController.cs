@@ -36,7 +36,8 @@ namespace PBP_Frontend.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            List list = db.Lists.Find(id);
+            ListService listService = new ListService(db);
+            ListViewModel list = listService.GetListForDetails((int) id);
             if (list == null)
             {
                 return HttpNotFound();

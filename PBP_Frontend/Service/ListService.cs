@@ -83,5 +83,11 @@ namespace PBP_Frontend.Service
             }
             return errors;
         }
+
+        public ListViewModel GetListForDetails(int listId)
+        {
+            ListViewModel listViewModel = new ListViewModel();
+            return listViewModel;
+        }
     }
 }
