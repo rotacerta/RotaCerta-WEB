@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -11,10 +12,15 @@ namespace PBP_Frontend.Controllers
         private ApplicationContext db = new ApplicationContext();
 
         // GET: Products
-        public ActionResult Index()
+        public ActionResult Index(string ResearchByName)
         {
-           var products = db.Products.Include(p => p.Location);
-           return View(products.ToList());
+            List<Product> products = db.Products.Include(p => p.Location).ToList();
+            ResearchByName = ResearchByName?.Trim();
+            if (ResearchByName?.Length > 0)
+            {
+                products = (from product in products where (product.Name.ContainsInsensitive(ResearchByName)) select product).ToList();
+            }
+           return View(products);
         }
 
         // GET: Products/Details/5
@@ -35,7 +41,14 @@ namespace PBP_Frontend.Controllers
         // GET: Products/Create
         public ActionResult Create()
         {
-            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "LocationId");
+            List<Location> locations = db.Locations.ToList();
+            List<SelectListItem> selectList = new List<SelectListItem>();
+            selectList.Add(new SelectListItem { Value = "", Text = "(Selecione)" });
+            foreach (Location location in locations)
+            {
+                selectList.Add(new SelectListItem { Value = location.LocationId.ToString(), Text = location.ToString() });
+            }
+            ViewBag.LocationId = new SelectList(selectList, "Value", "Text");
             return View();
         }
 

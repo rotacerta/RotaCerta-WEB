@@ -3,38 +3,75 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_InternalLayout.cshtml";
+    List<PBP_Frontend.Models.Product> productsList = Model.ToList();
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Location.LocationId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location.LocationId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ProductId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ProductId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ProductId })
-        </td>
-    </tr>
+<h2 class="internal-page-title">Consultar Produtos</h2>
+<h5 class="internal-page-subtitle">Visualize os produtos disponíveis</h5>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row col-md-12 my-4">
+        <input placeholder="Pesquisar Produto" class="form-control text-box single-line col-md-4 mr-4" id="ResearchByName" name="ResearchByName" maxlength="50" minlength="1" type="text" value="">
+        <button type="submit" class="btn btn-light col-md-1"><i class="fas fa-search"></i></button>
+    </div>
 }
-
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                Estrutura
+            </th>
+            <th>
+                Rua
+            </th>
+            <th>
+                Prédio
+            </th>
+            <th>
+                Andar
+            </th>
+        </tr>
+    </thead>
+    @if (productsList?.Count() > 0)
+    {
+        for (int i = 0; i < productsList?.Count(); i++)
+        {
+            <tr>
+                <td class="font-weight-bold">
+                    @Html.DisplayName(String.Format("{0}", i + 1))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => productsList[i].Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => productsList[i].Location.Structure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => productsList[i].Location.Street)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => productsList[i].Location.Building)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => productsList[i].Location.Flat)
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="6" class="text-center">
+                Nenhum item encontrado
+            </td>
+        </tr>
+    }
 </table>

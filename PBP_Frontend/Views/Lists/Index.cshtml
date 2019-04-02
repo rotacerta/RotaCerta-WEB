@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_InternalLayout.cshtml";
+    List<PBP_Frontend.Models.List> listList = Model.ToList();
 }
 
 <h2 class="internal-page-title">Consultar Listas</h2>
@@ -12,29 +13,35 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)Nome
+                #
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Requester)Solicitante
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Requester)
             </th>
             <th>
             </th>
         </tr>
     </thead>
 
-    @if (Model?.Count() > 0)
+    @if (listList?.Count() > 0)
     {
-        foreach (var item in Model)
+        for (int i = 0; i < listList?.Count(); i++)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                <td class="font-weight-bold">
+                    @Html.DisplayName(String.Format("{0}", i + 1))
+                </td>
+                <td class="font-weight-bold">
+                    @Html.DisplayFor(modelItem => listList[i].Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Requester)
+                    @Html.DisplayFor(modelItem => listList[i].Requester)
                 </td>
                 <td>
-                    @Html.ActionLink("Ver", "Details", new { id = item.ListId }, new { @class = "table-button-link" })
+                    @Html.ActionLink("Ver", "Details", new { id = listList[i].ListId }, new { @class = "table-button-link" })
                 </td>
             </tr>
         }
