@@ -7,3 +7,17 @@
     background-color: transparent;
     border-bottom: 1px solid #ced4da !important;
 }
+
+.validate-message-cell {
+    padding: 0 !important;
+    border: 0px solid #ced4da !important;
+    background-color: rgba(189, 8, 25, 0.83) !important;
+}
+
+.validate-message-cell span {
+    color: white !important;
+}
+
+.validate-message-cell:hover{
+    background-color: white;
+}

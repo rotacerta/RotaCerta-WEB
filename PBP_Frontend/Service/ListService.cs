@@ -30,7 +30,7 @@ namespace PBP_Frontend.Service
                         list.ListRequester = list?.ListRequester?.Trim();
                         if (list?.ListRequester?.Length > 0)
                         {
-                            if (list?.ProductsChosen?.Where(pc => pc.RequiredQuantity == 0)?.Count() == 0)
+                            if (list?.ProductsChosen?.Where(pc => pc.RequiredQuantity <= 0)?.Count() == 0)
                             {
                                 if (InsertList(list).Count == 0)
                                 {
@@ -45,7 +45,7 @@ namespace PBP_Frontend.Service
                             }
                             else
                             {
-                                errors.Add("Insira um valor maior que 0 no campo Quantidade.");
+                                errors.Add("Insira valores entre 0 e 300 no campo Quantidade.");
                             }
                         }
                         else
