@@ -211,16 +211,12 @@ namespace PBP_Frontend.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
+                var user = await UserManager.FindByEmailAsync(model.Email);
                 // if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 // {
                     // Não revelar que o usuário não existe ou não está confirmado
-                //    return View("ForgotPasswordConfirmation");
-                // }
-                Random randNum = new Random();
-                string newPassword = randNum.Next(0, 1000).ToString();
-                
-                await ChangePassword(model, user, newPassword);
+                //   return View("ForgotPasswordConfirmation");
+                //}         
 
                 // Para obter mais informações sobre como habilitar a confirmação da conta e redefinição de senha, visite https://go.microsoft.com/fwlink/?LinkID=320771
                 // Enviar um email com este link
@@ -279,7 +275,7 @@ namespace PBP_Frontend.Controllers
             {
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            var user = await UserManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
                 // Não revelar que o usuário não existe

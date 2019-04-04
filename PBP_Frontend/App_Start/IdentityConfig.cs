@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
+using System.Net.Mail;
+using System.Net.Mime;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -16,10 +19,45 @@ namespace PBP_Frontend
 {
     public class EmailService : IIdentityMessageService
     {
+        private string Email = "replyeras@gmail.com";
+        private string Password = "grupoeras06";
+        private string Title = "Olá, aqui é a equipe de segurança ERAS";
+        private string Content
+            = "Foi solicitada a alteração da senha do seu " +
+            "e-mail no aplicativo RotaCerta ";
+
+
         public Task SendAsync(IdentityMessage message)
         {
             // Conecte o seu serviço de email aqui para enviar um email.
-            return Task.FromResult(0);
+            // return Task.FromResult(0);
+            return Task.Factory.StartNew(() =>
+            {
+                sendMail(message);
+            });
+        }
+
+        void sendMail(IdentityMessage message)
+        {
+            #region formatter
+            string text = string.Format("Please click on this link to {0}: {1}", message.Subject, message.Body);
+            string html = Content + " <a href=\"" + message.Body + "\">link</a><br/>";
+
+            html += HttpUtility.HtmlEncode(message.Body);
+            #endregion
+
+            MailMessage msg = new MailMessage();
+            msg.From = new MailAddress(this.Email);
+            msg.To.Add(new MailAddress(message.Destination));
+            msg.Subject = Title;
+            msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));
+            msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
+
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587));
+            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential( this.Email, this.Password);
+            smtpClient.Credentials = credentials;
+            smtpClient.EnableSsl = true;
+            smtpClient.Send(msg);
         }
     }
 
