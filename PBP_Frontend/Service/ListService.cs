@@ -1,5 +1,6 @@
 ﻿using PBP_Frontend.Enums;
 using PBP_Frontend.Models;
+using PBP_Frontend.Repository;
 using PBP_Frontend.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,12 @@ namespace PBP_Frontend.Service
     public class ListService
     {
         private ApplicationContext db;
+        private readonly ListRepository listRepository;
 
         public ListService(ApplicationContext context)
         {
             db = context;
+            listRepository = new ListRepository(db);
         }
 
         public List<string> PreInsertList(ListViewModel list)
@@ -32,15 +35,22 @@ namespace PBP_Frontend.Service
                         {
                             if (list?.ProductsChosen?.Where(pc => pc.RequiredQuantity <= 0)?.Count() == 0)
                             {
-                                if (InsertList(list).Count == 0)
+                                if (GetAvailableLists()?.Count == 0)
                                 {
-                                    db.SaveChanges();
-                                    transaction.Commit();
+                                    if (InsertList(list).Count == 0)
+                                    {
+                                        db.SaveChanges();
+                                        transaction.Commit();
+                                    }
+                                    else
+                                    {
+                                        transaction.Rollback();
+                                        errors.Add("Não foi possível criar a lista.");
+                                    }
                                 }
                                 else
                                 {
-                                    transaction.Rollback();
-                                    errors.Add("Não foi possível criar a lista.");
+                                    errors.Add("Já existe uma lista aberta.");
                                 }
                             }
                             else
@@ -70,7 +80,6 @@ namespace PBP_Frontend.Service
         private List<string> InsertList(ListViewModel listVM)
         {
             List<string> errors = new List<string>();
-            //TODO: Criar um repositorio para criar uma query personalizada para trazer uma lista cujo ultimo changeLog seja AVALIABLE
             List list = new List { Name = listVM.ListName, Requester = listVM.ListRequester};
             db.Lists.Add(list);
             db.SaveChanges();
@@ -79,7 +88,7 @@ namespace PBP_Frontend.Service
             if(errors.Count == 0)
             {
                 ChangeLogService changeLogService = new ChangeLogService(db);
-                errors.AddRange(changeLogService.InsertChangeLog(ListStatusEnum.AVALIABLE, list.ListId));
+                errors.AddRange(changeLogService.InsertChangeLog(ListStatusEnum.AVAILABLE, list.ListId));
             }
             return errors;
         }
@@ -88,6 +97,17 @@ namespace PBP_Frontend.Service
         {
             ListViewModel listViewModel = new ListViewModel();
             return listViewModel;
+        }
+
+        public List<List> GetAvailableLists()
+        {
+            List<List> availablelists = listRepository.GetAvailableLists();
+            foreach (List list in availablelists)
+            {
+                list.ChangeLogs = db.ChangeLogs.Where(cl => cl.ListId.Equals(list.ListId)).ToList();
+                list.ProductsList = db.ProductLists.Where(pl => pl.ListId.Equals(list.ListId)).ToList();
+            }
+            return availablelists;
         }
     }
 }

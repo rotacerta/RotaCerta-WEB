@@ -1,11 +1,8 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using PBP_Frontend.Models;
 using PBP_Frontend.Service;
@@ -13,7 +10,8 @@ using PBP_Frontend.ViewModels;
 
 namespace PBP_Frontend.Controllers
 {
-    public class ListsController : Controller
+   [Authorize]
+   public class ListsController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
         private ListService listService;
