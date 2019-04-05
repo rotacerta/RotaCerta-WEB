@@ -19,11 +19,10 @@ namespace PBP_Frontend
 {
     public class EmailService : IIdentityMessageService
     {
-        private string Email = "replyeras@gmail.com";
-        private string Password = "grupoeras06";
-        private string Title = "Olá, aqui é a equipe de segurança ERAS";
-        private string Content
-            = "Foi solicitada a alteração da senha do seu " +
+        private readonly string Email = "replyeras@gmail.com";
+        private readonly string Password = "grupoeras06";
+        private readonly string Title = "Olá, aqui é a equipe de segurança ERAS";
+        private readonly string Content = "Foi solicitada a alteração da senha do seu " +
             "e-mail no aplicativo RotaCerta ";
 
 
@@ -92,8 +91,8 @@ namespace PBP_Frontend
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
+                RequireNonLetterOrDigit = false,
+                RequireDigit = false,
                 RequireLowercase = true,
                 RequireUppercase = true,
             };
