@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using PBP_Frontend.Models;
 
 namespace PBP_Frontend.Controllers
@@ -41,6 +42,7 @@ namespace PBP_Frontend.Controllers
         // GET: Products/Create
         public ActionResult Create()
         {
+            var userId = User?.Identity?.GetUserId();
             List<Location> locations = db.Locations.ToList();
             List<SelectListItem> selectList = new List<SelectListItem>();
             selectList.Add(new SelectListItem { Value = "", Text = "(Selecione)" });
