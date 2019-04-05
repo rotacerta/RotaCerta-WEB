@@ -217,7 +217,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\ListRepository.cs" />
     <Compile Include="Service\ChangeLogService.cs" />
-    <Compile Include="Service\SendEmailService.cs" />
     <Compile Include="Service\ListService.cs" />
     <Compile Include="Service\ProductChosenService.cs" />
     <Compile Include="Service\ProductToChooseService.cs" />

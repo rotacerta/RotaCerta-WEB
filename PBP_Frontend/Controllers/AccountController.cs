@@ -230,24 +230,6 @@ namespace PBP_Frontend.Controllers
             return View(model);
         }
 
-        private async Task<ActionResult> ChangePassword(ForgotPasswordViewModel model, ApplicationUser user, string newPassword)
-        {
-            var result = await UserManager.ChangePasswordAsync(user.Id, user.PasswordHash, newPassword);
-            if (result.Succeeded)
-            {
-                if (user != null)
-                {
-                    SendEmailService emailService = new SendEmailService();
-                    emailService.Send(user.UserName, user.Email, newPassword);
-
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                }
-                return RedirectToAction("Login", new { Message = "Senha alterada com sucesso" });
-            }
-
-            return View(model);
-        }
-
         //
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
