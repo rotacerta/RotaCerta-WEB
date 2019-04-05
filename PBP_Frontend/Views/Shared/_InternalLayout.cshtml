@@ -43,9 +43,13 @@
                     </a>
                 </li>
                 <li class="sidebar-bottom">
-                    <a href="@Url.Action("{action}","{Controller}")">
-                        <i class="fas fa-power-off"></i> Sair
-                    </a>
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <a href="javascript:document.getElementById('logoutForm').submit()">
+                            <i class="fas fa-power-off"></i> Sair
+                        </a>
+                    }
                 </li>
             </ul>
         </div>
