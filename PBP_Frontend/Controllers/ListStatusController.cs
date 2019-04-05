@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using PBP_Frontend.Models;
 
 namespace PBP_Frontend.Controllers
 {
-    public class ListStatusController : Controller
+   [Authorize]
+   public class ListStatusController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
 
