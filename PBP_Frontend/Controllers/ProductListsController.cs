@@ -10,7 +10,8 @@ using PBP_Frontend.Models;
 
 namespace PBP_Frontend.Controllers
 {
-    public class ProductListsController : Controller
+   [Authorize]
+   public class ProductListsController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
 
