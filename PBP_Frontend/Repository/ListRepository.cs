@@ -18,10 +18,10 @@ namespace PBP_Frontend.Repository
         public List<List> GetAvailableLists()
         {
             List<List> availablelists = new List<List>();
-            string query = "SELECT ListId, Name, Requester FROM (SELECT l.*, MAX(cl.ListStatusId) AS StatusId " +
+            string query = "SELECT ListId, Name, Requester, RunningTime FROM (SELECT l.*, MAX(cl.ListStatusId) AS StatusId " +
                                 "FROM Lists AS l " +
                                 "INNER JOIN ChangeLogs AS cl ON cl.ListId = l.ListId " +
-                                "GROUP BY l.ListId, l.Name, l.Requester) AS LastListsStatus WHERE StatusId = @StatusId";
+                                "GROUP BY l.ListId, l.Name, l.Requester, l.RunningTime) AS LastListsStatus WHERE StatusId = @StatusId";
             availablelists = db.Database.SqlQuery<List>(query, new SqlParameter("@StatusId", ListStatusEnum.AVAILABLE)).ToList();
             return availablelists;
         }

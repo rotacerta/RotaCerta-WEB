@@ -9,7 +9,7 @@
 <h5 class="internal-page-subtitle">Detalhes da lista de produtos</h5>
 
 <div>
-    <div>
+    <div class="col-md-11 mb-4">
         <div class="row">
             <p><span class="font-weight-bold">Nome da Lista:</span> @Html.DisplayFor(model => model.ListName)</p>
         </div>
@@ -17,15 +17,18 @@
             <p><span class="font-weight-bold">@Html.DisplayNameFor(model => model.ListRequester):</span> @Html.DisplayFor(model => model.ListRequester)</p>
         </div>
         <div class="row">
-            <p><span class="font-weight-bold">Data de criação:</span> --/--/----</p>
+            <p><span class="font-weight-bold">@Html.DisplayNameFor(model => model.CreationDate):</span> @Html.DisplayFor(model => model.CreationDate)</p>
         </div>
-        <div class="row">
-            <p><span class="font-weight-bold">Tempo de navegação:</span> 00:00:00</p>
-        </div>
+        @if (Model.LastListStatusId == (int)PBP_Frontend.Enums.ListStatusEnum.FINISHED)
+        {
+            <div class="row">
+                <p><span class="font-weight-bold">@Html.DisplayNameFor(model => model.RunningTime):</span>  @Html.DisplayFor(model => model.RunningTime)</p>
+            </div>
+        }
     </div>
 </div>
 
-<table class="table table-hover">
+<table class="table table-hover mt-4">
     <thead>
         <tr>
             <th>
@@ -37,9 +40,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.ProductsChosen.FirstOrDefault().RequiredQuantity)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductsChosen.FirstOrDefault().QuantityCatched)
-            </th>
+            @if (Model.LastListStatusId == (int)PBP_Frontend.Enums.ListStatusEnum.FINISHED)
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductsChosen.FirstOrDefault().QuantityCatched)
+                </th>
+            }
         </tr>
     </thead>
 
@@ -48,7 +54,7 @@
         for (int i = 0; i < Model?.ProductsChosen?.Count; i++)
         {
             <tr>
-                <td>
+                <td class="font-weight-bold">
                     @Html.DisplayName(String.Format("{0}", i + 1))
                 </td>
                 <td>
@@ -57,9 +63,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => Model.ProductsChosen[i].RequiredQuantity)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => Model.ProductsChosen[i].QuantityCatched)
-                </td>
+                @if (Model.LastListStatusId == (int)PBP_Frontend.Enums.ListStatusEnum.FINISHED)
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.ProductsChosen[i].QuantityCatched)
+                    </td>
+                }
             </tr>
         }
     }
@@ -72,6 +81,6 @@
         </tr>
     }
 </table>
-<p>
+<p class = "col-md-11 mt-4">
     @Html.ActionLink("Voltar", "Index")
 </p>

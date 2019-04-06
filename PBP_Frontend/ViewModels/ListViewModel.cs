@@ -1,19 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace PBP_Frontend.ViewModels
 {
     public class ListViewModel
     {
-        [Display(Name = "Nome", Prompt = "Nome", Order = -2)]
+        [Display(Name = "Nome", Prompt = "Nome", Order = -4)]
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [StringLength(50, ErrorMessage = "Máximo de {1} caracteres no campo {0}.")]
         public string ListName { get; set; }
 
-        [Display(Name = "Solicitante", Prompt = "Solicitante", Order = -1)]
+        [Display(Name = "Solicitante", Prompt = "Solicitante", Order = -3)]
         [Required(ErrorMessage = "O campo {0} é obrigatório.")]
         [StringLength(50, ErrorMessage = "Máximo de {1} caracteres no campo {0}.")]
         public string ListRequester { get; set; }
+
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [Display(Name = "Data de criação", Prompt = "Data de criação", Order = -2)]
+        public DateTime CreationDate { get; set; }
+
+        [Display(Name = "Tempo de Execução", Prompt = "Tempo de Execução", Order = -1)]
+        public TimeSpan RunningTime { get; set; }
+
+        public int LastListStatusId { get; set; }
+
         public List<ProductChosen> ProductsChosen { get; set; }
     }
 

@@ -227,6 +227,7 @@
     <Compile Include="Repository\ListRepository.cs" />
     <Compile Include="Service\ChangeLogService.cs" />
     <Compile Include="Service\ListService.cs" />
+    <Compile Include="Service\LocationService.cs" />
     <Compile Include="Service\ProductChosenService.cs" />
     <Compile Include="Service\ProductToChooseService.cs" />
     <Compile Include="Startup.cs" />

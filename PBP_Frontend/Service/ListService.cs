@@ -80,7 +80,7 @@ namespace PBP_Frontend.Service
         private List<string> InsertList(ListViewModel listVM)
         {
             List<string> errors = new List<string>();
-            List list = new List { Name = listVM.ListName, Requester = listVM.ListRequester};
+            List list = new List { Name = listVM.ListName, Requester = listVM.ListRequester, RunningTime = listVM.RunningTime};
             db.Lists.Add(list);
             db.SaveChanges();
             ProductChosenService productChosenService = new ProductChosenService(db);
@@ -96,6 +96,25 @@ namespace PBP_Frontend.Service
         public ListViewModel GetListForDetails(int listId)
         {
             ListViewModel listViewModel = new ListViewModel();
+            List list = db.Lists.Find(listId);
+            listViewModel.ListName = list.Name;
+            listViewModel.ListRequester = list.Requester;
+            listViewModel.RunningTime = list.RunningTime;
+
+            List<ChangeLog> changeLogList = db.ChangeLogs.Where(cl => cl.ListId == listId).ToList();
+            listViewModel.CreationDate = changeLogList.Where(cl => cl.ListStatusId == (int)ListStatusEnum.AVAILABLE).FirstOrDefault().Date;
+            listViewModel.LastListStatusId = changeLogList.LastOrDefault().ListStatusId;
+
+            listViewModel.ProductsChosen = new List<ProductChosen>();
+            List<ProductList> products = db.ProductLists.Where(pl => pl.ListId == listId).ToList();
+            foreach (ProductList productList in products)
+            {
+                listViewModel.ProductsChosen.Add( new ProductChosen {
+                    ProductId = productList.ProductId,
+                    ProductName = productList.Product.Name,
+                    QuantityCatched = productList.QuantityCatched,
+                    RequiredQuantity = productList.RequiredQuantity} );
+            }
             return listViewModel;
         }
 

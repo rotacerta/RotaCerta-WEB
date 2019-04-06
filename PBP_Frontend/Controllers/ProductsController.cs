@@ -3,8 +3,8 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
 using PBP_Frontend.Models;
+using PBP_Frontend.Service;
 
 namespace PBP_Frontend.Controllers
 {
@@ -43,15 +43,8 @@ namespace PBP_Frontend.Controllers
         // GET: Products/Create
         public ActionResult Create()
         {
-            var userId = User?.Identity?.GetUserId();
-            List<Location> locations = db.Locations.ToList();
-            List<SelectListItem> selectList = new List<SelectListItem>();
-            selectList.Add(new SelectListItem { Value = "", Text = "(Selecione)" });
-            foreach (Location location in locations)
-            {
-                selectList.Add(new SelectListItem { Value = location.LocationId.ToString(), Text = location.ToString() });
-            }
-            ViewBag.LocationId = new SelectList(selectList, "Value", "Text");
+            LocationService locationService = new LocationService(db);
+            ViewBag.LocationId = locationService.GetLocationsToDropDownList();
             return View();
         }
 
@@ -68,8 +61,8 @@ namespace PBP_Frontend.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.LocationId = new SelectList(db.Locations, "LocationId", "LocationId", product.LocationId);
+            LocationService locationService = new LocationService(db);
+            ViewBag.LocationId = locationService.GetLocationsToDropDownList();
             return View(product);
         }
 
