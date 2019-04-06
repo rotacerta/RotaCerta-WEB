@@ -38,10 +38,10 @@
                     #
                 </th>
                 <th>
-                    Produto
+                    @Html.DisplayNameFor(model => model.ProductsChosen.FirstOrDefault().ProductName)
                 </th>
                 <th>
-                    Quantidade
+                    @Html.DisplayNameFor(model => model.ProductsChosen.FirstOrDefault().RequiredQuantity)
                 </th>
             </tr>
         </thead>

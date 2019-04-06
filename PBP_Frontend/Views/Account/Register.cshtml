@@ -1,41 +1,45 @@
 ﻿@model PBP_Frontend.Models.RegisterViewModel
 @{
-        ViewBag.Title = "Registrar";
-        Layout = "~/Views/Shared/_ExternalLayout.cshtml";
-    }
-    @Scripts.Render("~/ExternalContent/css")
+    ViewBag.Title = "Registrar";
+    Layout = "~/Views/Shared/_ExternalLayout.cshtml";
+}
 
 <h2 class="center-text center-text-title">REGISTRAR</h2>
 <h4 class="center-text">Crie uma nova conta.</h4>
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal center-form-alt", role = "form", @style = "margin-left: 25%;" }))
-{
-    @Html.AntiForgeryToken()
 
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-        </div>
+<div class="row h-100 justify-content-center align-items-center">
+    <div class="w-100 mx-auto">
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "col-md-5 form-horizontal center-form-alt mx-auto", role = "form"}))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new { @class = "col-md-auto control-label" })
+                <div class="col-md-auto">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password, new { @class = "col-md-auto control-label" })
+                <div class="col-md-auto">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-auto control-label" })
+                <div class="col-md-auto">
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group center-form">
+                <div class="col-md-10 mx-auto">
+                    <input type="submit" class="btn btn-default btn-confirm" value="Registrar-se" />
+                </div>
+            </div>
+        }
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group center-form">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default btn-confirm" value="Registrar-se" />
-        </div>
-    </div>
-}
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
