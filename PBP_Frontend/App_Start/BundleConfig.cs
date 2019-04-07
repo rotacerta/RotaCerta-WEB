@@ -29,6 +29,9 @@ namespace PBP_Frontend
             bundles.Add(new StyleBundle("~/InternalContent/css").Include(
                       "~/Content/layoutInternal.css"));
 
+            bundles.Add(new ScriptBundle("~/InternalScript/ChangeMenuItem").Include(
+                        "~/Scripts/ScriptInternal.js"));
+
             bundles.Add(new StyleBundle("~/ExternalContent/css").Include(
                       "~/Content/layoutExternal.css"));
         }
