@@ -1,0 +1,22 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Erro 404 - Página não encontrada";
+    if (!User.Identity.IsAuthenticated)
+    {
+        Layout = "~/Views/Shared/_ExternalLayout.cshtml";
+    }
+}
+<div class="main-content d-block mx-auto my-auto">
+    <div class="content-404 mx-auto my-auto w-75">
+        <div class="content-text h-100">
+            <h1 class="error-number w-100">404</h1>
+            <p class="error-message w-100">Esta página não foi encontrada.</p>
+        </div>
+        <img src="~/Images/404_image.png" class="image-404" />
+    </div>
+</div>
+@section styles
+{
+    <link href="~/Content/Error404/Error404.css" rel="stylesheet" />
+}

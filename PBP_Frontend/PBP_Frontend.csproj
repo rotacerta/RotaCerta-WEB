@@ -193,6 +193,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChangeLogsController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ListsController.cs" />
     <Compile Include="Controllers\ListStatusController.cs" />
@@ -243,6 +244,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\CreateList\CreateList.css" />
+    <Content Include="Content\Error404\Error404.css" />
     <Content Include="Content\IndexList\IndexList.css" />
     <Content Include="Content\layoutExternal.css" />
     <Content Include="Content\layoutInternal.css" />
@@ -251,10 +253,9 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\checked.png" />
+    <Content Include="Images\404_image.png" />
     <Content Include="Images\logo-internal.png" />
     <Content Include="Images\logo-external.bmp" />
-    <Content Include="Images\true.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -377,6 +378,7 @@
     <Content Include="Views\ProductLists\Index.cshtml" />
     <Content Include="Views\Lists\ChooseProducts.cshtml" />
     <Content Include="Views\Lists\CreateList.cshtml" />
+    <Content Include="Views\Error\Error404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

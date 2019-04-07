@@ -1,0 +1,23 @@
+﻿.content-404 {
+    display: -webkit-flex;
+    display: flex;
+}
+
+.error-number {
+    font-weight: 700;
+    font-size: 150pt;
+    text-align: left;
+    color: rgb(235, 124, 49);
+}
+
+.error-message{
+    font-size: 20pt;
+}
+
+.image-404 {
+    width: 15%;
+    height: 30%;
+    display: block;
+    position: relative;
+    margin: auto 0 0 2rem;
+}
