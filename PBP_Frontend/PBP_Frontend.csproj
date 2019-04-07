@@ -231,6 +231,7 @@
     <Compile Include="Service\ProductChosenService.cs" />
     <Compile Include="Service\ProductToChooseService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Util\MailTemplates.cs" />
     <Compile Include="ViewModels\ChooseProductsViewModel.cs" />
     <Compile Include="ViewModels\ListViewModel.cs" />
   </ItemGroup>

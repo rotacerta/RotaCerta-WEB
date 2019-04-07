@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -11,6 +12,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using PBP_Frontend.Models;
 using PBP_Frontend.Service;
+using PBP_Frontend.Util;
 
 namespace PBP_Frontend.Controllers
 {
@@ -170,7 +172,8 @@ namespace PBP_Frontend.Controllers
                     // Enviar um email com este link
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirmar sua conta", "Confirme sua conta clicando <a href=\"" + callbackUrl + "\">aqui</a>");
+                    await UserManager.SendEmailAsync(user.Id, MailTemplates.GetRegisterMailSubject(), MailTemplates.GetRegisterMailTemplate(callbackUrl));
+                    //await UserManager.SendEmailAsync(user.Id, "Confirmar sua conta", "Confirme sua conta clicando <a href=\"" + callbackUrl + "\">aqui</a>");
 
                     return RedirectToAction("Index", "Home");
                 }
