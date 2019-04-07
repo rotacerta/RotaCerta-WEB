@@ -62,6 +62,10 @@ namespace PBP_Frontend.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl, LoginViewModel model)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             model.Email = "";
             model.Password = "";
             model.RememberMe = false;
