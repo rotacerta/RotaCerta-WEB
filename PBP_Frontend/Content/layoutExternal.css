@@ -21,6 +21,10 @@
     text-align: center;
 }
 
+.orange-title {
+    color: rgb(235, 124, 49);
+}
+
 .center-text-title {
     color: rgb(237, 125, 49);
     font-weight: bold;
