@@ -213,7 +213,7 @@ namespace PBP_Frontend.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByEmailAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                if (user == null)
                 {
                     ModelState.AddModelError("", "Usuário inexistente.");
                     return View();
