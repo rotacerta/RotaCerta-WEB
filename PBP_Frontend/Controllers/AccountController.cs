@@ -171,9 +171,6 @@ namespace PBP_Frontend.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-
-                    // Para obter mais informações sobre como habilitar a confirmação da conta e redefinição de senha, visite https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Enviar um email com este link
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(user.Id, MailTemplates.GetRegisterMailSubject(), MailTemplates.GetRegisterMailTemplate(callbackUrl));
@@ -182,8 +179,6 @@ namespace PBP_Frontend.Controllers
                 }
                 AddErrors(result);
             }
-
-            // Se chegamos até aqui e houver alguma falha, exiba novamente o formulário
             return View(model);
         }
 
@@ -218,21 +213,16 @@ namespace PBP_Frontend.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByEmailAsync(model.Email);
-                // if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-                // {
-                    // Não revelar que o usuário não existe ou não está confirmado
-                //   return View("ForgotPasswordConfirmation");
-                //}         
-
-                // Para obter mais informações sobre como habilitar a confirmação da conta e redefinição de senha, visite https://go.microsoft.com/fwlink/?LinkID=320771
-                // Enviar um email com este link
+                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                {
+                    ModelState.AddModelError("", "Usuário inexistente.");
+                    return View();
+                }
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
                 await UserManager.SendEmailAsync(user.Id, MailTemplates.GetForgotPassMailSubject(), MailTemplates.GetForgotPassMailTemplate(callbackUrl));
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
-
-            // Se chegamos até aqui e houver alguma falha, exiba novamente o formulário
             return View(model);
         }
 
@@ -266,7 +256,6 @@ namespace PBP_Frontend.Controllers
             var user = await UserManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
-                // Não revelar que o usuário não existe
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
