@@ -86,9 +86,12 @@ namespace PBP_Frontend.Controllers
             {
                 return View(model);
             }
-
-            // Isso não conta falhas de login em relação ao bloqueio de conta
-            // Para permitir que falhas de senha acionem o bloqueio da conta, altere para shouldLockout: true
+            var user = await UserManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Usuário inexistente.");
+                return View(model);
+            }
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
