@@ -8,7 +8,8 @@ using PBP_Frontend.Service;
 
 namespace PBP_Frontend.Controllers
 {
-   [Authorize]
+    [Authorize]
+    [OutputCache(NoStore = false, Duration = 0)]
     public class ProductsController : Controller
     {
         private ApplicationContext db = new ApplicationContext();

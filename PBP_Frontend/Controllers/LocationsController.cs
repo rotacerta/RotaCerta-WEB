@@ -6,8 +6,9 @@ using PBP_Frontend.Models;
 
 namespace PBP_Frontend.Controllers
 {
-   [Authorize]
-   public class LocationsController : Controller
+    [Authorize]
+    [OutputCache(NoStore = false, Duration = 0)]
+    public class LocationsController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
 

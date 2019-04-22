@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -11,12 +7,12 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using PBP_Frontend.Models;
-using PBP_Frontend.Service;
 using PBP_Frontend.Util;
 
 namespace PBP_Frontend.Controllers
 {
     [Authorize]
+    [OutputCache(NoStore = false, Duration = 0)]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;

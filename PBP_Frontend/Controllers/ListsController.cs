@@ -10,8 +10,9 @@ using PBP_Frontend.ViewModels;
 
 namespace PBP_Frontend.Controllers
 {
-   [Authorize]
-   public class ListsController : Controller
+    [Authorize]
+    [OutputCache(NoStore = false, Duration = 0)]
+    public class ListsController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
         private ListService listService;

@@ -2,6 +2,7 @@
 
 namespace PBP_Frontend.Controllers
 {
+    [OutputCache(NoStore = false, Duration = 0)]
     public class ErrorController : Controller
     {
         // GET: Error

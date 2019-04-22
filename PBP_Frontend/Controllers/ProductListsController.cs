@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using PBP_Frontend.Models;
 
 namespace PBP_Frontend.Controllers
 {
-   [Authorize]
-   public class ProductListsController : Controller
+    [Authorize]
+    [OutputCache(NoStore = false, Duration = 0)]
+    public class ProductListsController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
 

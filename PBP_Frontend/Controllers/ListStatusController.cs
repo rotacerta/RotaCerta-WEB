@@ -6,8 +6,9 @@ using PBP_Frontend.Models;
 
 namespace PBP_Frontend.Controllers
 {
-   [Authorize]
-   public class ListStatusController : Controller
+    [Authorize]
+    [OutputCache(NoStore = false, Duration = 0)]
+    public class ListStatusController : Controller
     {
         private ApplicationContext db = new ApplicationContext();
 

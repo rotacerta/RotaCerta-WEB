@@ -2,8 +2,9 @@
 
 namespace PBP_Frontend.Controllers
 {
-   [Authorize]
-   public class HomeController : Controller
+    [Authorize]
+    [OutputCache(NoStore = false, Duration = 0)]
+    public class HomeController : Controller
     {
         public ActionResult Index()
         {

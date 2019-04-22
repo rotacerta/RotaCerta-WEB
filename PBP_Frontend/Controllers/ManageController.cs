@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -11,6 +10,7 @@ using PBP_Frontend.Models;
 namespace PBP_Frontend.Controllers
 {
     [Authorize]
+    [OutputCache(NoStore = false, Duration = 0)]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;
