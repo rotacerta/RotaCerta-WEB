@@ -174,10 +174,16 @@ namespace PBP_Frontend.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, MailTemplates.GetRegisterMailSubject(), MailTemplates.GetRegisterMailTemplate(callbackUrl));
-
+                    try
+                    {
+                        string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        await UserManager.SendEmailAsync(user.Id, MailTemplates.GetRegisterMailSubject(), MailTemplates.GetRegisterMailTemplate(callbackUrl));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Error sending email: " + e.Message);
+                    }
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
@@ -221,10 +227,18 @@ namespace PBP_Frontend.Controllers
                     ModelState.AddModelError("", "Usuário inexistente.");
                     return View();
                 }
-                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                await UserManager.SendEmailAsync(user.Id, MailTemplates.GetForgotPassMailSubject(), MailTemplates.GetForgotPassMailTemplate(callbackUrl));
-                return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                try
+                {
+                    string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                    await UserManager.SendEmailAsync(user.Id, MailTemplates.GetForgotPassMailSubject(), MailTemplates.GetForgotPassMailTemplate(callbackUrl));
+                    return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error sending email: " + e.Message);
+                    ModelState.AddModelError("", e.Message);
+                }
             }
             return View(model);
         }
