@@ -44,7 +44,10 @@
                         @Html.HiddenFor(modelItem => Model.ProductsToChoose[i].ProductLocation)
                     </td>
                     <td>
-                        @Html.EditorFor(modelItem => Model.ProductsToChoose[i].Chosen)
+                        <div class="custom-control custom-checkbox">
+                            @Html.CheckBoxFor(modelItem => modelItem.ProductsToChoose[i].Chosen, new { @class = "custom-control-input" })
+                            @Html.LabelFor(modelItem => modelItem.ProductsToChoose[i].Chosen, String.Format(" "), new { @class = "custom-control-label" })
+                        </div>
                     </td>
                 </tr>
             }

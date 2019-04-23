@@ -373,3 +373,9 @@ body {
             }
     }
 }
+
+.custom-control-input:checked ~ .custom-control-label::before {
+    color: #fff;
+    border-color: #ed7c31;
+    background-color: #ed7c31;
+}

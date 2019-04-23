@@ -36,8 +36,10 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-11">
                         <div class="checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
+                            <div class="custom-control custom-checkbox">
+                                @Html.CheckBoxFor(m => m.RememberMe, new { @class = "custom-control-input" })
+                                @Html.LabelFor(m => m.RememberMe, new { @class = "custom-control-label" })
+                            </div>
                         </div>
                     </div>
                 </div>
