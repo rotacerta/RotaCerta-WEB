@@ -3,7 +3,6 @@
     public enum ListStatusEnum
     {
         AVAILABLE = 1,
-        RUNNING = 2,
-        FINISHED = 3
+        FINISHED = 2
     }
 }
