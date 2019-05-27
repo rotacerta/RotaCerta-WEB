@@ -1,5 +1,6 @@
 ﻿using PBP_Frontend.Enums;
 using PBP_Frontend.Models;
+using PBP_Frontend.Models.API;
 using PBP_Frontend.Repository;
 using PBP_Frontend.ViewModels;
 using System;
@@ -17,6 +18,12 @@ namespace PBP_Frontend.Service
         public ListService(ApplicationContext context)
         {
             db = context;
+            listRepository = new ListRepository(db);
+        }
+
+        public ListService()
+        {
+            db = new ApplicationContext();
             listRepository = new ListRepository(db);
         }
 
@@ -127,6 +134,46 @@ namespace PBP_Frontend.Service
                 list.ProductsList = db.ProductLists.Where(pl => pl.ListId.Equals(list.ListId)).ToList();
             }
             return availablelists;
+        }
+
+        public bool SendListDb(ListApi listApi, ChangeLog changeLog)
+        {
+            if (listApi != null && listApi?.List != null && listApi?.ProductsList != null)
+            {
+                using (DbContextTransaction transaction = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        List<ProductList> productLists = listApi.ProductsList;
+                        /*ProductList productList;
+                        foreach (var p in productLists)
+                        {
+                            productList = new ProductList
+                            {
+                                ProductListId = p.ProductListId,
+                                ListId = p.ListId,
+                                ProductId = p.ProductId,
+                                QuantityCatched = p.QuantityCatched,
+                                RequiredQuantity = p.RequiredQuantity
+                            };
+                            db.Entry(productList).State = EntityState.Modified;
+                        }*/
+                        db.Entry(productLists).State = EntityState.Modified;
+                        db.SaveChanges();
+                        db.Entry(listApi.List).State = EntityState.Modified;
+                        db.SaveChanges();
+                        db.ChangeLogs.Add(changeLog);
+                        db.SaveChanges();
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                    }
+                }
+            }
+            return false;
         }
     }
 }
