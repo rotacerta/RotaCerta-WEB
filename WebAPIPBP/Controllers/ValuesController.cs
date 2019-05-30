@@ -21,7 +21,6 @@ namespace WebAPIPBP.Controllers
         // GET api/values
         public HttpResponseMessage Get()
         {
-            // TODO: API nao retorna o nome e location dos produtos
             List list = listService.GetAvailableLists()?.FirstOrDefault();
             if (list == null)
             {
@@ -29,10 +28,19 @@ namespace WebAPIPBP.Controllers
                 HttpError erro = new HttpError(message);
                 return Request.CreateResponse(HttpStatusCode.NoContent, erro);
             }
-            ListApi lApi = new ListApi
+            ListDTO lDTO = new ListDTO
             {
-                List = new List { ListId = list.ListId, Name = list.Name, Requester = list.Requester },
-                ProductsList = list.ProductsList.Select(p => new ProductList { ListId = p.ListId, ProductId = p.ProductId, ProductListId = p.ProductListId, RequiredQuantity = p.RequiredQuantity }).ToList()
+                ListId = list.ListId,
+                Name = list.Name,
+                Requester = list.Requester,
+                ProductsList = list.ProductsList.Select(p => new ProductDTO {
+                    ProductListId = p.ProductListId,
+                    ProductId = p.ProductId,
+                    Name = p.Product.Name,
+                    ListId = p.ListId,
+                    LocationId = p.Product.LocationId,
+                    RequiredQuantity = p.RequiredQuantity
+                }).ToList()
             };
             try
             {
@@ -40,7 +48,7 @@ namespace WebAPIPBP.Controllers
                 return
                     new HttpResponseMessage()
                     {
-                        Content = new StringContent(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(lApi), Encoding.UTF8, "application/json")
+                        Content = new StringContent(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(lDTO), Encoding.UTF8, "application/json")
                     };
             }
             catch (Exception e)
@@ -56,24 +64,24 @@ namespace WebAPIPBP.Controllers
         {
             if (value == null || string.IsNullOrEmpty(value))
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Nenhum conteúdo encontrado."));
-            ListApi listApi;
+            ListDTO listDTO;
             try
             {
-                listApi = JsonConvert.DeserializeObject<ListApi>(value);
+                listDTO = JsonConvert.DeserializeObject<ListDTO>(value);
             }
             catch (Exception e)
             {
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, "Falha ao deserializar lista."));
             }
-            if(listApi?.List == null || listApi?.ProductsList == null)
+            if(listService.IsListDTOEmpty(listDTO))
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Nenhum conteúdo encontrado."));
             ChangeLog changeLog = new ChangeLog
             {
-                ListId = listApi.List.ListId,
+                ListId = listDTO.ListId,
                 Date = DateTime.Now,
                 ListStatusId = (int)ListStatusEnum.FINISHED
             };
-            if (listService.SendListDb(listApi, changeLog))
+            if (listService.SendListDb(listDTO, changeLog))
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, "Lista criada com sucesso."));
             else
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, "Falha ao criar lista."));

@@ -136,17 +136,22 @@ namespace PBP_Frontend.Service
             return availablelists;
         }
 
-        public bool SendListDb(ListApi listApi, ChangeLog changeLog)
+        public bool IsListDTOEmpty(ListDTO listDTO)
         {
-            if (listApi != null && listApi?.List != null && listApi?.ProductsList != null)
+            return ((String.IsNullOrEmpty(listDTO?.Name) && String.IsNullOrEmpty(listDTO?.Requester) && listDTO?.ListId == 0) || listDTO?.ProductsList == null);
+        }
+
+        public bool SendListDb(ListDTO listDTO, ChangeLog changeLog)
+        {
+            if (!IsListDTOEmpty(listDTO))
             {
                 using (DbContextTransaction transaction = db.Database.BeginTransaction())
                 {
                     try
                     {
-                        List<ProductList> productLists = listApi.ProductsList;
-                        /*ProductList productList;
-                        foreach (var p in productLists)
+                        List<ProductDTO> productLists = listDTO.ProductsList;
+                        ProductList productList;
+                        foreach (ProductDTO p in productLists)
                         {
                             productList = new ProductList
                             {
@@ -157,10 +162,16 @@ namespace PBP_Frontend.Service
                                 RequiredQuantity = p.RequiredQuantity
                             };
                             db.Entry(productList).State = EntityState.Modified;
-                        }*/
-                        db.Entry(productLists).State = EntityState.Modified;
+                        };
                         db.SaveChanges();
-                        db.Entry(listApi.List).State = EntityState.Modified;
+                        List list = new List
+                        {
+                            ListId = listDTO.ListId,
+                            Name = listDTO.Name,
+                            Requester = listDTO.Requester,
+                            RunningTime = listDTO.Time
+                        };
+                        db.Entry(list).State = EntityState.Modified;
                         db.SaveChanges();
                         db.ChangeLogs.Add(changeLog);
                         db.SaveChanges();
