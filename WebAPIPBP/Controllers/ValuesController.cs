@@ -21,6 +21,7 @@ namespace WebAPIPBP.Controllers
         // GET api/values
         public HttpResponseMessage Get()
         {
+            // TODO: API nao retorna o nome e location dos produtos
             List list = listService.GetAvailableLists()?.FirstOrDefault();
             if (list == null)
             {
@@ -54,9 +55,7 @@ namespace WebAPIPBP.Controllers
         public IHttpActionResult Post([FromBody]string value)
         {
             if (value == null || string.IsNullOrEmpty(value))
-            {
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Nenhum conteúdo encontrado."));
-            }
             ListApi listApi;
             try
             {
@@ -66,6 +65,8 @@ namespace WebAPIPBP.Controllers
             {
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, "Falha ao deserializar lista."));
             }
+            if(listApi?.List == null || listApi?.ProductsList == null)
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Nenhum conteúdo encontrado."));
             ChangeLog changeLog = new ChangeLog
             {
                 ListId = listApi.List.ListId,

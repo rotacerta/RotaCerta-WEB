@@ -15,8 +15,8 @@ namespace WebAPIPBP
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                url: "api/{controller}/{action}",
+                defaults: new { controller = "Values", action = "Get" }
             );
         }
     }
