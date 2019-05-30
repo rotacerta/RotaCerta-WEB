@@ -25,9 +25,12 @@ namespace WebAPIPBP.Controllers
             List list = listService.GetAvailableLists()?.FirstOrDefault();
             if (list == null)
             {
-                var message = string.Format("A lista solicitada está vazia ou não existe.");
-                HttpError erro = new HttpError(message);
-                return Request.CreateResponse(HttpStatusCode.NoContent, erro);
+                return
+                    new HttpResponseMessage()
+                    {
+                        Content = new StringContent("A lista solicitada está vazia ou não existe.", Encoding.UTF8, "text/html"),
+                        StatusCode = HttpStatusCode.NoContent
+                    };
             }
             ListDTO lDTO = new ListDTO
             {
@@ -57,14 +60,18 @@ namespace WebAPIPBP.Controllers
                 return
                     new HttpResponseMessage()
                     {
-                        Content = new StringContent(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(lDTO), Encoding.UTF8, "application/json")
+                        Content = new StringContent(new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(lDTO), Encoding.UTF8, "application/json"),
+                        StatusCode = HttpStatusCode.OK
                     };
             }
             catch (Exception e)
             {
-                var message = string.Format("Erro ao converter lista.");
-                HttpError erro = new HttpError(message);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, erro);
+                return
+                    new HttpResponseMessage()
+                    {
+                        Content = new StringContent("Erro ao converter lista.", Encoding.UTF8, "text/html"),
+                        StatusCode = HttpStatusCode.InternalServerError
+                    };
             }
         }
 
