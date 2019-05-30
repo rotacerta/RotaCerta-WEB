@@ -14,6 +14,11 @@ namespace PBP_Frontend.Service
             db = context;
         }
 
+        public LocationService()
+        {
+            db = new ApplicationContext();
+        }
+
         public SelectList GetLocationsToDropDownList()
         {
             List<Location> locations = db.Locations.ToList();
@@ -26,6 +31,11 @@ namespace PBP_Frontend.Service
                 selectList.Add(new SelectListItem { Value = location.LocationId.ToString(), Text = location.ToString() });
             }
             return new SelectList(selectList, "Value", "Text");
+        }
+
+        public List<Location> GetAll()
+        {
+            return db.Locations.ToList();
         }
     }
 }

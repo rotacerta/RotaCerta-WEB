@@ -10,6 +10,7 @@ namespace PBP_Frontend.Models.API
         public string Requester { get; set; }
         public TimeSpan Time { get; set; }
         public List<ProductDTO> ProductsList { get; set; }
+        public List<LocationDTO> Locations { get; set; }
     }
 
     public class ProductDTO
@@ -21,5 +22,14 @@ namespace PBP_Frontend.Models.API
         public int LocationId { get; set; }
         public int RequiredQuantity { get; set; }
         public int QuantityCatched { get; set; }
+    }
+
+    public class LocationDTO
+    {
+        public int LocationId { get; set; }
+        public int Structure { get; set; }
+        public int Street { get; set; }
+        public int Building { get; set; }
+        public int Flat { get; set; }
     }
 }

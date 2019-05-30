@@ -16,6 +16,7 @@ namespace WebAPIPBP.Controllers
     public class ValuesController : ApiController
     {
         private ListService listService = new ListService();
+        private LocationService locationService = new LocationService();
         public List<string> errors = new List<string>();
 
         // GET api/values
@@ -40,6 +41,14 @@ namespace WebAPIPBP.Controllers
                     ListId = p.ListId,
                     LocationId = p.Product.LocationId,
                     RequiredQuantity = p.RequiredQuantity
+                }).ToList(),
+                Locations = locationService.GetAll().Select(l => new LocationDTO
+                {
+                    LocationId = l.LocationId,
+                    Building = l.Building,
+                    Flat = l.Flat,
+                    Street = l.Street,
+                    Structure = l.Structure
                 }).ToList()
             };
             try
