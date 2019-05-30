@@ -91,9 +91,9 @@ namespace WebAPIPBP.Controllers
                 ListStatusId = (int)ListStatusEnum.FINISHED
             };
             if (listService.SendListDb(listDTO, changeLog))
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, "Lista criada com sucesso."));
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, "Lista finalizada com sucesso."));
             else
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, "Falha ao criar lista."));
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, "Falha ao finalizar lista."));
         }
     }
 }

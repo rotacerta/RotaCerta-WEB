@@ -156,7 +156,7 @@ namespace PBP_Frontend.Service
                             productList = new ProductList
                             {
                                 ProductListId = p.ProductListId,
-                                ListId = p.ListId,
+                                ListId = listDTO.ListId,
                                 ProductId = p.ProductId,
                                 QuantityCatched = p.QuantityCatched,
                                 RequiredQuantity = p.RequiredQuantity
