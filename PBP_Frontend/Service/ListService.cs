@@ -145,8 +145,8 @@ namespace PBP_Frontend.Service
         {
             if (!IsListDTOEmpty(listDTO))
             {
-                ChangeLog listCL = db.Lists.Find(listDTO.ListId)?.ChangeLogs?.LastOrDefault();
-                if(listCL != null)
+                ChangeLog listCL = db.Lists.AsNoTracking().Where(l => l.ListId == listDTO.ListId)?.FirstOrDefault()?.ChangeLogs?.LastOrDefault();
+                if (listCL != null)
                 {
                     if(listCL.ListStatus.ListStatusId == (int)ListStatusEnum.AVAILABLE)
                     {
@@ -154,6 +154,7 @@ namespace PBP_Frontend.Service
                         {
                             try
                             {
+                                listCL = null;
                                 List<ProductDTO> productLists = listDTO.ProductsList;
                                 ProductList productList;
                                 foreach (ProductDTO p in productLists)
