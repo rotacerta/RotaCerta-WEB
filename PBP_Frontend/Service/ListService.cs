@@ -141,50 +141,59 @@ namespace PBP_Frontend.Service
             return ((String.IsNullOrEmpty(listDTO?.Name) && String.IsNullOrEmpty(listDTO?.Requester) && listDTO?.ListId == 0) || listDTO?.ProductsList == null);
         }
 
-        public bool SendListDb(ListDTO listDTO, ChangeLog changeLog)
+        public Tuple<bool, string> SendListDb(ListDTO listDTO, ChangeLog changeLog)
         {
             if (!IsListDTOEmpty(listDTO))
             {
-                using (DbContextTransaction transaction = db.Database.BeginTransaction())
+                ChangeLog listCL = db.Lists.Find(listDTO.ListId)?.ChangeLogs?.LastOrDefault();
+                if(listCL != null)
                 {
-                    try
+                    if(listCL.ListStatus.ListStatusId == (int)ListStatusEnum.AVAILABLE)
                     {
-                        List<ProductDTO> productLists = listDTO.ProductsList;
-                        ProductList productList;
-                        foreach (ProductDTO p in productLists)
+                        using (DbContextTransaction transaction = db.Database.BeginTransaction())
                         {
-                            productList = new ProductList
+                            try
                             {
-                                ProductListId = p.ProductListId,
-                                ListId = listDTO.ListId,
-                                ProductId = p.ProductId,
-                                QuantityCatched = p.QuantityCatched,
-                                RequiredQuantity = p.RequiredQuantity
-                            };
-                            db.Entry(productList).State = EntityState.Modified;
-                        };
-                        db.SaveChanges();
-                        List list = new List
-                        {
-                            ListId = listDTO.ListId,
-                            Name = listDTO.Name,
-                            Requester = listDTO.Requester,
-                            RunningTime = listDTO.Time
-                        };
-                        db.Entry(list).State = EntityState.Modified;
-                        db.SaveChanges();
-                        db.ChangeLogs.Add(changeLog);
-                        db.SaveChanges();
-                        transaction.Commit();
-                        return true;
+                                List<ProductDTO> productLists = listDTO.ProductsList;
+                                ProductList productList;
+                                foreach (ProductDTO p in productLists)
+                                {
+                                    productList = new ProductList
+                                    {
+                                        ProductListId = p.ProductListId,
+                                        ListId = listDTO.ListId,
+                                        ProductId = p.ProductId,
+                                        QuantityCatched = p.QuantityCatched,
+                                        RequiredQuantity = p.RequiredQuantity
+                                    };
+                                    db.Entry(productList).State = EntityState.Modified;
+                                };
+                                db.SaveChanges();
+                                List list = new List
+                                {
+                                    ListId = listDTO.ListId,
+                                    Name = listDTO.Name,
+                                    Requester = listDTO.Requester,
+                                    RunningTime = listDTO.Time
+                                };
+                                db.Entry(list).State = EntityState.Modified;
+                                db.SaveChanges();
+                                db.ChangeLogs.Add(changeLog);
+                                db.SaveChanges();
+                                transaction.Commit();
+                                return new Tuple<bool, string>(true, "success");
+                            }
+                            catch (Exception e)
+                            {
+                                transaction.Rollback();
+                                return new Tuple<bool, string>(false, "failure");
+                            }
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        transaction.Rollback();
-                    }
+                    return new Tuple<bool, string>(false, "already_completed");
                 }
             }
-            return false;
+            return new Tuple<bool, string>(false, "incomplete_data");
         }
     }
 }

@@ -90,17 +90,22 @@ namespace WebAPIPBP.Controllers
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, "Falha ao deserializar lista."));
             }
             if(listService.IsListDTOEmpty(listDTO))
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Nenhum conteúdo encontrado."));
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "Conteúdo num formato não suportado."));
             ChangeLog changeLog = new ChangeLog
             {
                 ListId = listDTO.ListId,
                 Date = DateTime.Now,
                 ListStatusId = (int)ListStatusEnum.FINISHED
             };
-            if (listService.SendListDb(listDTO, changeLog))
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, "Lista finalizada com sucesso."));
-            else
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, "Falha ao finalizar lista."));
+            Tuple<bool, string> insertResult = listService.SendListDb(listDTO, changeLog);
+            switch (insertResult.Item2)
+            {
+                case "incomplete_data": return ResponseMessage(Request.CreateResponse(HttpStatusCode.BadRequest, "A lista possui dados incompletos."));
+                case "already_completed": return ResponseMessage(Request.CreateResponse(HttpStatusCode.Conflict, "A lista já foi finalizada."));
+                case "success": return ResponseMessage(Request.CreateResponse(HttpStatusCode.OK, "Lista finalizada com sucesso."));
+                case "failure": return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, "Falha ao finalizar lista."));
+                default: break;
+            }
         }
     }
 }
