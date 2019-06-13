@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Net;
+using System.Web.Mvc;
 
 namespace PBP_Frontend.Controllers
 {
@@ -8,6 +9,17 @@ namespace PBP_Frontend.Controllers
     {
         public ActionResult Index()
         {
+            string searchSafeCod = Dns.GetHostName();
+            IPAddress[] safeCod = Dns.GetHostAddresses(searchSafeCod);
+            foreach (IPAddress iP in safeCod)
+            {
+                int? peaces = iP?.ToString()?.Split('.')?.Length as int?;
+                if (peaces != null && peaces == 4)
+                {
+                    ViewBag.SafeCod = iP;
+                    break;
+                }
+            }
             return View();
         }
     }

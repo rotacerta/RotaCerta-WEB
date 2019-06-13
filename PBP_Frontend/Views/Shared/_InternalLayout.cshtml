@@ -18,6 +18,9 @@
         <div class="menu-list">
 
             <ul id="menu-content" class="menu-content collapse out">
+                <li id="liItemSettings">
+                    <a href="@Url.Action("Index","Home")"><i class=" fa fa-home"></i>Início</a>
+                </li>
                 <li data-toggle="collapse" data-target="#menu-list" class="collapsed" id="liItemList">
                     <a href="#"><i class="fas fa-th-list"></i> Lista <i class="fas fa-caret-down arrow"></i></a>
                 </li>
@@ -38,12 +41,12 @@
                     </a>
                 </li>
                 <!--
-                <li id="liItemManual">
-                    <a href="http://www.senaicimatec.com.br/processos/programadebolsas/#/processo-seletivo">
-                        <i class="fas fa-book"></i> Manual de uso
-                    </a>
-                </li>
-                -->
+    <li id="liItemManual">
+        <a href="http://www.senaicimatec.com.br/processos/programadebolsas/#/processo-seletivo">
+            <i class="fas fa-book"></i> Manual de uso
+        </a>
+    </li>
+    -->
                 <li class="sidebar-bottom">
                     @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                     {
