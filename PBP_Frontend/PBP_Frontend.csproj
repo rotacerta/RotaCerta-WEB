@@ -257,6 +257,7 @@
     <Content Include="Images\404_image.png" />
     <Content Include="Images\logo-internal.png" />
     <Content Include="Images\logo-external.bmp" />
+    <Content Include="Images\newlogo-pbp.png" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
