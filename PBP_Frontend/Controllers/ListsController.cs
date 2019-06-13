@@ -25,7 +25,6 @@ namespace PBP_Frontend.Controllers
         // GET: Lists
         public ActionResult Index()
         {
-    
             return View(db.Lists.ToList());
         }
 

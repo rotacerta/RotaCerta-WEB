@@ -38,7 +38,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Location.Flat)
             </th>
-            <th></th>
         </tr>
     </thead>
     @if (productsList?.Count() > 0)
@@ -64,9 +63,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => productsList[i].Location.Flat)
                 </td>
-                <td>
-                    @Html.ActionLink("Editar", "Edit", new { id = productsList[i].ProductId }, new { @class = "table-button-link" })
-                </td>
             </tr>
         }
     }
@@ -79,5 +75,4 @@
         </tr>
     }
 </table>
-<link href="~/Content/IndexList/IndexList.css" rel="stylesheet" />
 <script>menuItemId = "liItemProducts"</script>

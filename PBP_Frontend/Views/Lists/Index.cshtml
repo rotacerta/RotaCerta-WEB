@@ -4,7 +4,6 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_InternalLayout.cshtml";
     List<PBP_Frontend.Models.List> listList = Model.ToList();
-    List<PBP_Frontend.Models.ChangeLog> listchangelog = ViewBag.ListChangeLog;
 }
 
 <h2 class="internal-page-title">Consultar Listas</h2>
@@ -42,7 +41,6 @@
                     @Html.DisplayFor(modelItem => listList[i].Requester)
                 </td>
                 <td>
-
                     @Html.ActionLink("Ver", "Details", new { id = listList[i].ListId }, new { @class = "table-button-link" })
                 </td>
             </tr>
