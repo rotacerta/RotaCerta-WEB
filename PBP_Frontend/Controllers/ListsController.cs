@@ -25,7 +25,9 @@ namespace PBP_Frontend.Controllers
         // GET: Lists
         public ActionResult Index()
         {
-            return View(db.Lists.ToList());
+            List<List> lists = db.Lists.ToList();
+            lists = lists.OrderByDescending(list => list.ChangeLogs.LastOrDefault().Date.Date).ToList();
+            return View(lists);
         }
 
         // GET: Lists/Details/5

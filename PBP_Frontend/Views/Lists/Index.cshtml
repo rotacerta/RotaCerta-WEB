@@ -22,6 +22,9 @@
                 @Html.DisplayNameFor(model => model.Requester)
             </th>
             <th>
+                Status
+            </th>
+            <th>
             </th>
         </tr>
     </thead>
@@ -39,6 +42,16 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => listList[i].Requester)
+                </td>
+                <td>
+                    @if (listList[i].ChangeLogs.LastOrDefault().ListStatusId == (int)PBP_Frontend.Enums.ListStatusEnum.AVAILABLE)
+                    {
+                        <p class="text-success font-weight-bold">Aberta</p>
+                    }
+                    else
+                    {
+                        <p class="text-danger font-weight-bold">Fechada</p>
+                    }
                 </td>
                 <td>
                     @Html.ActionLink("Ver", "Details", new { id = listList[i].ListId }, new { @class = "table-button-link" })
