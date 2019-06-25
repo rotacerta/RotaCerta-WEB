@@ -46,7 +46,9 @@
                 <div class="form-group">
                     <div class="col-md-11">
                         <input type="submit" value="Efetuar login" class="btn btn-default btn-confirm" />
-                        <p class="mt-3">@Html.ActionLink("Esqueceu sua senha?", "ForgotPassword", new { @class = "side-link" })</p>
+                        <br />
+                        <p class="mt-3 float-lg-left">@Html.ActionLink("Criar uma conta", "Register", "Account", null, new { @class = "side-link" })</p>
+                        <p class="mt-3 float-lg-right">@Html.ActionLink("Esqueceu sua senha?", "ForgotPassword", new { @class = "side-link" })</p>
                     </div>
                 </div>
             }
